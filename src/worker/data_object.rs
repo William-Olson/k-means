@@ -8,11 +8,11 @@ pub struct DataObject {
 
 impl DataObject {
   pub fn new(uid: usize, d: &Vec<f32>) -> DataObject {
-      let dataObj = DataObject {
+      let data_obj = DataObject {
         id: uid,
         cluster: 0,
         data: d.clone()
       };
-      dataObj
+      data_obj
   }
 }

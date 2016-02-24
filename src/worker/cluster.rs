@@ -8,7 +8,7 @@ pub struct Cluster {
 }
 
 impl Cluster {
-    pub fn new(uid: usize, ) -> Cluster {
+    pub fn new(uid: usize) -> Cluster {
         let cluster = Cluster {
           id: uid,
           mean: Mean { x: -1.0, y: -1.0 }

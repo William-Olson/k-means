@@ -10,6 +10,6 @@ pub fn outputs (msg: &'static str) {
 }
 
 //parse the args
-pub fn parseArgs () {
+pub fn parse_args () {
 
 }
