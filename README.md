@@ -39,10 +39,8 @@ _clusters_:
 implement:
   - DataObject
     - dist
-    - print
   - Worker
     - set_data
-    - set_clusters
     - calc_means
     - run
   - Util
