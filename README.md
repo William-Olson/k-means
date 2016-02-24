@@ -34,4 +34,18 @@ _filename_:
 _clusters_:
  - the desired number of clusters to establish.
 
+###### TODO:
 
+implement:
+  - DataObject
+    - dist
+    - print
+  - Worker
+    - set_data
+    - set_clusters
+    - calc_means
+    - run
+  - Util
+    - read_file
+    - arg_parser
+    - write_to_file
