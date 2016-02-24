@@ -1,0 +1,4 @@
+[root]
+name = "k-means"
+version = "0.1.0"
+

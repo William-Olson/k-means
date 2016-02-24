@@ -1,0 +1,4 @@
+[package]
+name = "k-means"
+version = "0.1.0"
+authors = ["William Olson <willko747@gmail.com>"]
