@@ -20,4 +20,12 @@ impl DataObject {
   pub fn print(&self) {
     println!("{} \t {:?} \t {}", self.id, self.data, self.cluster);
   }
+
+  pub fn dist(&self, other: &DataObject) -> f32 {
+    let ds: f32 = 0.0;
+    // for i in 0..(self.data.len()) {
+    //   //TODO
+    // }
+    ds
+  }
 }

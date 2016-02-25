@@ -21,7 +21,7 @@ pub struct Worker {
 //methods for Worker
 impl Worker {
 
-    /*new: creates a new worker interface */
+    /* new: creates a new worker struct */
     pub fn new () -> Worker {
       let wkr = Worker {
         clusters: Vec::new(),
@@ -29,6 +29,10 @@ impl Worker {
         convergence: false
       };
       wkr
+    }
+
+    pub fn set_data (&mut self, blob: &String) {
+      // TODO: implement this
     }
 
     /* set_clusters: creates the vector of clusters */
@@ -44,51 +48,30 @@ impl Worker {
 
   /* choose_centroids: handles random selection of initial cluster means */
   fn choose_centroids (&mut self, k: usize) {
-    //sanity check
-    if self.data_set.len() < 1 { return; }
-    
-    //random setup
+    if self.data_set.len() < 1 { return; } //sanity check
+
+    //random generator setup
     let domain = Range::new(1, self.data_set.len() + 1);
     let mut rng = rand::thread_rng();
-    let mut set_means: Vec<usize> = Vec::new();
+    let mut randoms: Vec<usize> = Vec::new();
 
-    loop { // until the desired k unique randoms are set
+    loop { // until the desired k unique randoms are picked
       let random_selection = domain.ind_sample(&mut rng);
-      if set_means.contains(&random_selection) { continue; }
-      set_means.push(random_selection);
-      if set_means.len() == k { break; }
+      if randoms.contains(&random_selection) { continue; }
+      randoms.push(random_selection);
+      if randoms.len() == k { break; }
     }
-
     /* now set the means for each cluster and the cluster ids for each random */
-    for i in 0..(self.clusters.len()) {
+    for i in 0..k {
+      let id = randoms[i];
       let m = Mean {
-        x: self.data_set[i].data[0],
-        y: self.data_set[i].data[1]
+        x: self.data_set[id].data[0],
+        y: self.data_set[id].data[1]
       };
       self.clusters[i].set_mean(m);
       self.data_set[i].cluster = self.clusters[i].id;
     }
   }
 
-
-
-    
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}// impl Worker end
 
