@@ -25,9 +25,11 @@ fn main() {
 
     // show_input(&data_blob, k);
 
+    //set up data structures
     w.set_data(&data_blob);
     w.set_clusters(k);
-    
+
+    //display stucts to console
     w.print_data();
     w.print_clusters();
 

@@ -8,7 +8,11 @@
 * Methods:
 *    calc_means
 *    choose_centroids
+*    cluster_index
+*    data_index
 *    new
+*    print_clusters
+*    print_data
 *    run
 *    set_clusters
 *    set_data
@@ -37,49 +41,49 @@ pub struct Worker {
 //methods for Worker
 impl Worker {
 
-    /* new: creates a new worker struct */
-    pub fn new () -> Worker {
-      let wkr = Worker {
-        clusters: Vec::new(),
-        data_set: Vec::new(),
-        convergence: false
-      };
-      wkr
-    }
+  /* new: creates a new worker struct */
+  pub fn new () -> Worker {
+    let wkr = Worker {
+      clusters: Vec::new(),
+      data_set: Vec::new(),
+      convergence: false
+    };
+    wkr
+  }
 
-    pub fn set_data (&mut self, blob: &String) {
-      let ref_data: Vec<&str> = blob.split("\n").collect(); //split by line
-      let mut id = 1;
-      for line in &ref_data { // split by whitespace
-        if line.is_empty() == false {
-          // parse vals, create object & add to vector
-          self.data_set.push(
-              DataObject::new(id, &( line.split_whitespace().map(
-                           |val| val.parse::<f32>().unwrap()).collect() )
-              )
-          );
-          id += 1;
-        }
+  pub fn set_data (&mut self, blob: &String) {
+    let ref_data: Vec<&str> = blob.split("\n").collect(); //split by line
+    let mut id = 1;
+    for line in &ref_data { // split by whitespace
+      if line.is_empty() == false {
+        // parse vals, create object & add to vector
+        self.data_set.push(
+            DataObject::new(id, &( line.split_whitespace().map(
+                         |val| val.parse::<f32>().unwrap()).collect() )
+            )
+        );
+        id += 1;
       }
     }
+  }
 
-    pub fn print_data (&self) {
-      for d in &self.data_set { d.print(); }
-    }
+  pub fn print_data (&self) {
+    for d in &self.data_set { d.print(); }
+  }
 
-    /* set_clusters: creates the vector of clusters */
-    pub fn set_clusters (&mut self, k: usize) {
-      self.clusters = Vec::new();
-      for i in 0..k {
-        let tmp_clst = Cluster::new(i+1);
-        self.clusters.push(tmp_clst);
-      }
-      self.choose_centroids(k);
+  /* set_clusters: creates the vector of clusters */
+  pub fn set_clusters (&mut self, k: usize) {
+    self.clusters = Vec::new();
+    for i in 0..k {
+      let tmp_clst = Cluster::new(i+1);
+      self.clusters.push(tmp_clst);
     }
+    self.choose_centroids(k);
+  }
 
-    pub fn print_clusters (&self) {
-      for c in &self.clusters { c.print(); }
-    }
+  pub fn print_clusters (&self) {
+    for c in &self.clusters { c.print(); }
+  }
 
   /* choose_centroids: handles random selection of initial cluster means */
   fn choose_centroids (&mut self, k: usize) {

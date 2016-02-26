@@ -28,10 +28,14 @@ impl DataObject {
   }
 
   pub fn dist(&self, other: &DataObject) -> f32 {
-    let ds: f32 = 0.0;
-    // for i in 0..(self.data.len()) {
-    //   //TODO
-    // }
+    let mut ds: f32 = 0.0;
+    for i in 0..(self.data.len()) {
+      //rust has math methods on some primitives:
+      //  https://doc.rust-lang.org/std/primitive.f32.html#method.sqrt
+      //  https://doc.rust-lang.org/std/primitive.f32.html#method.exp2
+      let diff = self.data[i] - other.data[i];
+      ds += (diff.exp2()).sqrt();
+    }
     ds
   }
 }
