@@ -1,3 +1,19 @@
+/*
+* Program:     k-means (hw2)
+* Author:      Will Olson
+* Date:        2/25/2016
+*
+* File: worker/mod.rs
+* 
+* Methods:
+*    new
+*    set_data
+*    set_clusters
+*    choose_centroids
+*    calc_means
+*    run
+*/
+
 
 //imports
 extern crate rand; // for random number generation
@@ -33,6 +49,7 @@ impl Worker {
 
     pub fn set_data (&mut self, blob: &String) {
       // TODO: implement this
+
     }
 
     /* set_clusters: creates the vector of clusters */

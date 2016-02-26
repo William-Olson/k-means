@@ -1,4 +1,10 @@
-
+/*
+* Program:     k-means (hw2)
+* Author:      Will Olson
+* Date:        2/25/2016
+*
+* File: worker/cluster.rs
+*/
 
 pub struct Mean { pub x: f32, pub y: f32}
 

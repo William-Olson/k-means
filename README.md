@@ -36,7 +36,7 @@ _clusters_:
 
 ###### TODO:
 
-implement:
+need to implement:
   - DataObject
     - dist
   - Worker
@@ -47,3 +47,7 @@ implement:
     - read_file
     - arg_parser
     - write_to_file
+
+should also:
+  - implement Display instead of print methods
+  - use the 'clap' crate for arg parsing

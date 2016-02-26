@@ -1,4 +1,10 @@
-
+/*
+* Program:     k-means (hw2)
+* Author:      Will Olson
+* Date:        2/25/2016
+*
+* File: worker/data_object.rs
+*/
 
 pub struct DataObject {
   pub id: usize,
