@@ -23,6 +23,8 @@
 extern crate rand; // for random number generation
 use worker::rand::distributions::{IndependentSample, Range};
 
+use std::f32::INFINITY;
+
 //local modules
 mod cluster;
 mod data_object;
@@ -65,6 +67,46 @@ impl Worker {
         id += 1;
       }
     }
+  }
+
+  pub fn print_data_dists(&self, id: usize) {
+    let mut res: Vec<(usize, f32)> = Vec::new();
+    let (index, err) = self.data_index(id);
+    if err { return; }
+    for d in &self.data_set {
+      res.push((d.id, (self.data_set[index]).dist(d)));
+    }
+    //find the minimum distance between objects
+    let mut min_dist: (usize, f32) = (0, INFINITY);
+    for tpl in &res {
+      if (tpl.1).is_nan() == false {
+        if tpl.1 <  min_dist.1 {
+          min_dist = tpl.clone();
+        }
+      }
+    }
+    println!("{:?}", res);
+    println!("min_dist: {:?}", min_dist);
+  }
+
+  pub fn print_mean_dists(&self, id: usize) {
+    let mut res: Vec<(usize, f32)> = Vec::new();
+    let (index, err) = self.data_index(id);
+    if err { return; }
+    for c in &self.clusters {
+      res.push((c.id, (self.data_set[index]).dist(&(c.mean))));
+    }
+    //find the minimum distance between objects
+    let mut min_dist: (usize, f32) = (0, INFINITY);
+    for tpl in &res {
+      if (tpl.1).is_nan() == false {
+        if tpl.1 <  min_dist.1 {
+          min_dist = tpl.clone();
+        }
+      }
+    }
+    println!("{:?}", res);
+    println!("min_dist: {:?}", min_dist);
   }
 
   pub fn print_data (&self) {

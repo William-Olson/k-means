@@ -33,6 +33,7 @@ fn main() {
     w.print_data();
     w.print_clusters();
 
+    w.print_mean_dists(1);
 }
 
 
