@@ -48,8 +48,23 @@ impl Worker {
     }
 
     pub fn set_data (&mut self, blob: &String) {
-      // TODO: implement this
+      let ref_data: Vec<&str> = blob.split("\n").collect(); //split by line
+      let mut id = 1;
+      for line in &ref_data { // split by whitespace
+        if line.is_empty() == false {
+          // parse vals, create object & add to vector
+          self.data_set.push(
+              DataObject::new(id, &( line.split_whitespace().map(
+                           |val| val.parse::<f32>().unwrap()).collect() )
+              )
+          );
+          id += 1;
+        }
+      }
+    }
 
+    pub fn print_data (&self) {
+      for d in &self.data_set { d.print(); }
     }
 
     /* set_clusters: creates the vector of clusters */
@@ -80,15 +95,30 @@ impl Worker {
     }
     /* now set the means for each cluster and the cluster ids for each random */
     for i in 0..k {
-      let id = randoms[i];
+      let rand_id = randoms[i];
+      let (data_index, err) = self.data_index(rand_id);
+      if err { panic!("Error getting data index from id {}", rand_id); }
       let m = Mean {
-        x: self.data_set[id].data[0],
-        y: self.data_set[id].data[1]
+        x: self.data_set[data_index].data[0],
+        y: self.data_set[data_index].data[1]
       };
       self.clusters[i].set_mean(m);
-      self.data_set[i].cluster = self.clusters[i].id;
+      self.data_set[data_index].cluster = self.clusters[i].id;
     }
   }
 
+  fn cluster_index (&self, id: usize) -> (usize, bool) {
+    for i in 0..(self.clusters.len()) {
+      if self.clusters[i].id == id { return (i, false); }
+    }
+    (0, true)
+  }
+
+  fn data_index (&self, id: usize) -> (usize, bool) {
+    for i in 0..(self.data_set.len()) {
+      if self.data_set[i].id == id { return (i, false); }
+    }
+    (0, true)
+  }
 }// impl Worker end
 

@@ -27,7 +27,7 @@ pub fn parse_args () -> (String, usize, bool) {
   let mut tmp_str = String::new();
 
   //arg length check
-  if env::args().len() < 2 {
+  if env::args().len() <= 2 {
     println!("\nError: Not enough arguments!");
     println!("Cargo Usage: \n\n\tcargo run <file> <k>\n");
     println!("Binary Usage: \n\n\t./k-means <file> <k>\n");

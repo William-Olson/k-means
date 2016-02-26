@@ -23,15 +23,15 @@ fn main() {
 
     output("---- k-means ----");
 
-    //show read file data & k value
-    let mut arg_info = String::new();
-    arg_info.push_str("k: ");
-    arg_info.push_str(&(k.to_string()));
-    arg_info.push_str("\ndata\n");
-    arg_info.push_str(&data_blob);
-    output(&arg_info);
+    // show_input(&data_blob, k);
 
-
+    w.set_data(&data_blob);
     w.set_clusters(k);
+    w.print_data();
 
+}
+
+
+fn show_input (ds: &String, k: usize) {
+    println!("k: {} \ndata: \n{}", k, ds);
 }
