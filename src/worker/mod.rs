@@ -77,6 +77,9 @@ impl Worker {
       self.choose_centroids(k);
     }
 
+    pub fn print_clusters (&self) {
+      for c in &self.clusters { c.print(); }
+    }
 
   /* choose_centroids: handles random selection of initial cluster means */
   fn choose_centroids (&mut self, k: usize) {

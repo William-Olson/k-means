@@ -27,7 +27,9 @@ fn main() {
 
     w.set_data(&data_blob);
     w.set_clusters(k);
+    
     w.print_data();
+    w.print_clusters();
 
 }
 
