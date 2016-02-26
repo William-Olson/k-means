@@ -6,7 +6,7 @@
 * File: util.rs
 */
 
-//some std libs
+//std libs
 use std::error::Error;
 use std::fs::File;
 use std::path::Path;
@@ -21,14 +21,17 @@ pub fn output (msg: &str) {
   println!("{}", msg);
 }
 
-//parse the args
-pub fn parse_args () -> (String, f32, bool) {
+//parse_args: handles the input parsing
+pub fn parse_args () -> (String, usize, bool) {
   let mut args = Vec::new();
-  let tmp = String::new();
+  let mut tmp_str = String::new();
 
-  //arg len check
+  //arg length check
   if env::args().len() < 2 {
-    return (tmp, -1.0, true);
+    println!("\nError: Not enough arguments!");
+    println!("Cargo Usage: \n\n\tcargo run <file> <k>\n");
+    println!("Binary Usage: \n\n\t./k-means <file> <k>\n");
+    return (tmp_str, 0, true);
   }
 
   //get args
@@ -39,10 +42,33 @@ pub fn parse_args () -> (String, f32, bool) {
   }
 
   //parse k arg
-  let k: f32 = match args[1].parse::<f32>() {
-      Err(e) => { println!("Error parsing k argument: {}", e.to_string()); -1.0 },
+  let k: usize = match args[1].parse::<usize>() {
+      Err(e) => { println!("\nError parsing k argument: {}", Error::description(&e)); 0 },
       Ok(result) => result,
   };
 
-  (String::from("test"), k, false)
+  //read file data
+  let mut file = read_file(&args[0]);
+  match file.read_to_string(&mut tmp_str) {
+      Err(er) => println!("\nError reading file: {}", Error::description(&er)),
+      Ok(_)   => { /* data read successfully */ },
+  }
+
+  //return errors if needed
+  if k == 0 || tmp_str.is_empty() {
+    return (tmp_str, k, true);
+  }
+
+  (tmp_str, k, false)
+}
+
+fn read_file(filename: &String) -> File {
+  let path = Path::new(filename);
+  let dsp = path.display();
+  // Open the path (in read-only mode) & read contents
+  let file: File = match File::open(&path) {
+      Err(er) => panic!("Error: couldn't open {}: {}", dsp, Error::description(&er)),
+      Ok(file) => file,
+  };
+  file
 }

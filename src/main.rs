@@ -18,13 +18,20 @@ use worker::Worker;
 
 fn main() {
     let mut w = Worker::new();
-    let n: usize = 10;
-
     let (data_blob, k, err) = parse_args();
     if err { return; }
 
-    println!("k-means: {:?}", k);
-    output(&data_blob);
-    w.set_clusters(n);
+    output("---- k-means ----");
+
+    //show read file data & k value
+    let mut arg_info = String::new();
+    arg_info.push_str("k: ");
+    arg_info.push_str(&(k.to_string()));
+    arg_info.push_str("\ndata\n");
+    arg_info.push_str(&data_blob);
+    output(&arg_info);
+
+
+    w.set_clusters(k);
 
 }

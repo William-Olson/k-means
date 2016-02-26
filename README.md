@@ -44,8 +44,6 @@ need to implement:
     - calc_means
     - run
   - Util
-    - read_file
-    - arg_parser
     - write_to_file
 
 should also:

@@ -6,12 +6,12 @@
 * File: worker/mod.rs
 * 
 * Methods:
-*    new
-*    set_data
-*    set_clusters
-*    choose_centroids
 *    calc_means
+*    choose_centroids
+*    new
 *    run
+*    set_clusters
+*    set_data
 */
 
 
