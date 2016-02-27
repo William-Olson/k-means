@@ -10,14 +10,9 @@
 #![warn(missing_docs)]
 #![allow(dead_code)]
 
-
-/// for arg parsing and file io
+// local mods
 mod util;
-
-/// For interacting with data/cluster sets
 mod worker;
-
-// shorten namespaces
 use util::*;
 use worker::Worker;
 
@@ -28,16 +23,24 @@ fn main() {
 
     if err { return; }
     output("---- k-means ----");
+
+    // debug: show user input data
     // show_input(&data_blob, k);
 
     // set up data structures
     w.set_data(&data_blob);
     w.set_clusters(k);
 
-    // display stucts to console
-    w.print_data();
-    w.print_clusters();
-    w.print_mean_dists(1);
+    // debug: print set/cluster data
+    // w.print_data();
+    // w.print_clusters();
+    // w.print_mean_dists(1);
+
+    // run k-means algorithm
+    //w.run();
+
+    // output results
+    output(&(w.results_to_string()));
 }
 
 /// Prints the user input to the console.

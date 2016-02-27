@@ -176,5 +176,32 @@ impl Worker {
     }
     (0, true)
   }
+
+  /// Calculates new centroid values for all `clusters`.
+  fn calc_means (&mut self) -> bool {
+    //TODO: implement this
+    true
+  }
+
+  /// Runs the k-means algorithm on `data_set`.
+  pub fn run (&mut self) {
+    //TODO: implement this
+  }
+
+  /// Creates and returns a String containing the
+  /// `data_set` data & cluster id associations.
+  pub fn results_to_string (&self) -> String {
+    let mut res = String::from("data \t     \t cluster\n");
+    for o in &self.data_set {
+      res.push_str(&(o.data[0].to_string()));
+      res.push_str(" \t ");
+      res.push_str(&(o.data[1].to_string()));
+      res.push_str(" \t ");
+      res.push_str(&(o.cluster.to_string()));
+      res.push('\n');
+    }
+    res
+  }
+
 }// impl Worker end
 
