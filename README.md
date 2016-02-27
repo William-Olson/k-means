@@ -47,7 +47,7 @@ need to implement:
     - write_to_file
 
 should also:
-  - use rustdoc comments
+  - add param & return rustdoc comment sections
   - do some unit tests?
   - implement Display instead of print methods
   - use the 'clap' crate for arg parsing
