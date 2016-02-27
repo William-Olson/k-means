@@ -37,10 +37,7 @@ _clusters_:
 ###### TODO:
 
 need to implement:
-  - DataObject
-    - dist
   - Worker
-    - set_data
     - calc_means
     - run
   - Util
@@ -49,5 +46,3 @@ need to implement:
 should also:
   - add param & return rustdoc comment sections
   - do some unit tests?
-  - implement Display instead of print methods
-  - use the 'clap' crate for arg parsing
