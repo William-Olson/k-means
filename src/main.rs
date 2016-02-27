@@ -7,7 +7,6 @@
 */
 
 // compiler verbosity config
-#![warn(missing_docs)]
 #![allow(dead_code)]
 
 // local mods
@@ -18,26 +17,18 @@ use worker::Worker;
 
 /// Runs the k-means program.
 fn main() {
-    let mut w = Worker::new();
-    let (data_blob, k, err) = parse_args();
-
-    if err { return; }
     output("---- k-means ----");
 
-    // debug: show user input data
-    // show_input(&data_blob, k);
+    // parse arguments
+    let (data_blob, k, err) = parse_args();
+    if err { return; }
 
-    // set up data structures
+    // create worker from input
+    let mut w = Worker::new();
     w.set_data(&data_blob);
     w.set_clusters(k);
 
-    // debug: print set/cluster data
-    // w.print_data();
-    // w.print_clusters();
-    // w.print_mean_dists(1);
-
-    // run k-means algorithm
-    //w.run();
+    w.run(); // run k-means algorithm
 
     // output results
     output(&(w.results_to_string()));
