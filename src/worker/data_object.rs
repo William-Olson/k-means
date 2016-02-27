@@ -1,23 +1,28 @@
-/*
- * Program:     k-means (hw2)
- * Author:      Will Olson
- * Date:        2/25/2016
- *
- * File: worker/data_object.rs
-*/
+//! A module for `DataObject`s.
+//!
+//! # Path
+//!
+//! worker/data_object.rs
+//!
+//! # Description
+//!
+//!
+
 
 use worker::cluster::Mean;
 
-/* DataObject: 
- *   holds data values, data id, & cluster id 
-*/
+
+/// holds data values, data id, & cluster id
 pub struct DataObject {
   pub id: usize,
   pub cluster: usize,
   pub data: Vec<f32>
 }
+
+
 impl DataObject {
-  /* new: creates a new data_object struct */
+
+  /// creates a new `DataObject` struct
   pub fn new(uid: usize, d: &Vec<f32>) -> DataObject {
       let data_obj = DataObject {
         id: uid,
@@ -26,11 +31,13 @@ impl DataObject {
       };
       data_obj
   }
-  /* print: displays the current data_object to the console */
+
+  /// displays the current `DataObject` to the console
   pub fn print(&self) {
     println!("{} \t {:?} \t {}", self.id, self.data, self.cluster);
   }
 
+  /// calculates dissimilarity against the given operand
   pub fn dist<T: DistOperand>(&self, operand: &T) -> f32 {
     operand.dist_cmp(&self)
   }
@@ -38,20 +45,14 @@ impl DataObject {
 }
 
 
-/* trait: DistOperand 
- *   allows comparing 2 DataObjects or
- *   a DataObject with a Mean struct
- *
- * side_note:
- *  Rust has math methods attached to the f32 primitives.
- *  for details see:
- *    https://doc.rust-lang.org/std/primitive.f32.html#method.sqrt
- *    https://doc.rust-lang.org/std/primitive.f32.html#method.powi
-*/
+/// allows comparing 2 `DataObject`s or
+/// a `DataObject` with a `Mean` struct
 trait DistOperand {
   fn dist_cmp(&self, d: &DataObject) -> f32;
 }
 
+/// calculates dissimilarity between
+/// a `Mean` struct and a `DataObject`
 impl DistOperand for Mean {
   fn dist_cmp(&self, d: &DataObject) -> f32 {
      let diff1: f32 = d.data[0] - self.x;
@@ -60,7 +61,9 @@ impl DistOperand for Mean {
      ( diff1.powi(2).sqrt() + diff2.powi(2).sqrt() )
   }
 }
-//more general
+
+/// calculates dissimilarity between
+/// two `DataObject`s
 impl DistOperand for DataObject {
   fn dist_cmp(&self, d: &DataObject) -> f32 {
     let mut ds: f32 = 0.0;

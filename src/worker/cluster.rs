@@ -1,10 +1,13 @@
-/*
-* Program:     k-means (hw2)
-* Author:      Will Olson
-* Date:        2/25/2016
-*
-* File: worker/cluster.rs
-*/
+//! A module for creating `Cluster`s.
+//!
+//! # Path
+//!
+//! worker/cluster.rs
+//!
+//! # Description
+//!
+//!
+
 
 pub struct Mean { pub x: f32, pub y: f32}
 
@@ -15,7 +18,7 @@ pub struct Cluster {
 
 impl Cluster {
 
-    /* new: creates a new cluster */
+    /// Creates a new cluster.
     pub fn new(uid: usize) -> Cluster {
         let cluster = Cluster {
           id: uid,
@@ -23,12 +26,12 @@ impl Cluster {
         };
         cluster
     }
-    /* set_mean: sets the cluster's mean property */
+    /// Sets the cluster's mean property.
     pub fn set_mean(&mut self, m: Mean) {
       self.mean = m;
     }
 
-    /* print: displays the current cluster object in the console */
+    /// Displays the current cluster object in the console.
     pub fn print (&self) {
       println!("{}: ( {}, {} )", self.id, self.mean.x, self.mean.y);
     }

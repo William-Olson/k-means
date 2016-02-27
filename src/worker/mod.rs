@@ -1,38 +1,33 @@
-/*
-* Program:     k-means (hw2)
-* Author:      Will Olson
-* Date:        2/25/2016
-*
-* File: worker/mod.rs
-* 
-* Methods:
-*    calc_means
-*    choose_centroids
-*    cluster_index
-*    data_index
-*    new
-*    print_clusters
-*    print_data
-*    run
-*    set_clusters
-*    set_data
-*/
+//! A module for interacting with `Worker`s.
+//!
+//! # Path
+//!
+//! worker/mod.rs
+//!
+//! # Description
+//!
+//!
 
 
-//imports
-extern crate rand; // for random number generation
+
+
+// imports
+extern crate rand;
 use worker::rand::distributions::{IndependentSample, Range};
 
+// std libs
 use std::f32::INFINITY;
 
-//local modules
+// local modules
 mod cluster;
 mod data_object;
 use worker::cluster::*;
 use worker::data_object::*;
 
 
-//this module's struct
+/// Holds cluster & data `Vec`s, and
+/// a convergence boolean for determining
+/// if the k-means algorithm is done.
 pub struct Worker {
   clusters: Vec<Cluster>,
   data_set: Vec<DataObject>,
@@ -40,10 +35,10 @@ pub struct Worker {
 }
 
 
-//methods for Worker
+// methods for Worker
 impl Worker {
 
-  /* new: creates a new worker struct */
+  /// Creates a new `Worker` struct.
   pub fn new () -> Worker {
     let wkr = Worker {
       clusters: Vec::new(),
@@ -53,6 +48,8 @@ impl Worker {
     wkr
   }
 
+  /// Parses the given `blob` into a `DataObject`s 
+  /// and adds them to the `Worker`s `data_set`.
   pub fn set_data (&mut self, blob: &String) {
     let ref_data: Vec<&str> = blob.split("\n").collect(); //split by line
     let mut id = 1;
@@ -62,13 +59,15 @@ impl Worker {
         self.data_set.push(
             DataObject::new(id, &( line.split_whitespace().map(
                          |val| val.parse::<f32>().unwrap()).collect() )
-            )
+            ) // might want to check for parse errors instead of unwrap()
         );
         id += 1;
       }
     }
   }
 
+  /// Prints the distances from the `DataObject` with the 
+  /// given id against all other `DataObjects` in `data_set`.
   pub fn print_data_dists(&self, id: usize) {
     let mut res: Vec<(usize, f32)> = Vec::new();
     let (index, err) = self.data_index(id);
@@ -76,7 +75,7 @@ impl Worker {
     for d in &self.data_set {
       res.push((d.id, (self.data_set[index]).dist(d)));
     }
-    //find the minimum distance between objects
+    // find the min distance
     let mut min_dist: (usize, f32) = (0, INFINITY);
     for tpl in &res {
       if (tpl.1).is_nan() == false {
@@ -89,6 +88,9 @@ impl Worker {
     println!("min_dist: {:?}", min_dist);
   }
 
+  /// Prints dissimilarity information to the console
+  /// about the `DataObject` with the given id against
+  /// all the current cluster centroids in `clusters`.
   pub fn print_mean_dists(&self, id: usize) {
     let mut res: Vec<(usize, f32)> = Vec::new();
     let (index, err) = self.data_index(id);
@@ -96,7 +98,7 @@ impl Worker {
     for c in &self.clusters {
       res.push((c.id, (self.data_set[index]).dist(&(c.mean))));
     }
-    //find the minimum distance between objects
+    // find the minimum distance between objects
     let mut min_dist: (usize, f32) = (0, INFINITY);
     for tpl in &res {
       if (tpl.1).is_nan() == false {
@@ -109,11 +111,13 @@ impl Worker {
     println!("min_dist: {:?}", min_dist);
   }
 
+  /// Shows the `data_set` values in the console.
   pub fn print_data (&self) {
     for d in &self.data_set { d.print(); }
   }
 
-  /* set_clusters: creates the vector of clusters */
+  /// Creates a vector of `Cluster`s and assigns
+  /// it to the `Worker`s `clusters` property.
   pub fn set_clusters (&mut self, k: usize) {
     self.clusters = Vec::new();
     for i in 0..k {
@@ -123,15 +127,15 @@ impl Worker {
     self.choose_centroids(k);
   }
 
+  /// Shows the `clusters` vector in the console.
   pub fn print_clusters (&self) {
     for c in &self.clusters { c.print(); }
   }
 
-  /* choose_centroids: handles random selection of initial cluster means */
+  /// Handles random selection of initial cluster means.
   fn choose_centroids (&mut self, k: usize) {
-    if self.data_set.len() < 1 { return; } //sanity check
 
-    //random generator setup
+    // random generator setup
     let domain = Range::new(1, self.data_set.len() + 1);
     let mut rng = rand::thread_rng();
     let mut randoms: Vec<usize> = Vec::new();
@@ -142,7 +146,7 @@ impl Worker {
       randoms.push(random_selection);
       if randoms.len() == k { break; }
     }
-    /* now set the means for each cluster and the cluster ids for each random */
+    // set means for each cluster and the cluster ids for each random
     for i in 0..k {
       let rand_id = randoms[i];
       let (data_index, err) = self.data_index(rand_id);
@@ -156,6 +160,7 @@ impl Worker {
     }
   }
 
+  /// Retrieves the index of the `Cluster` with the given id.
   fn cluster_index (&self, id: usize) -> (usize, bool) {
     for i in 0..(self.clusters.len()) {
       if self.clusters[i].id == id { return (i, false); }
@@ -163,6 +168,8 @@ impl Worker {
     (0, true)
   }
 
+
+  /// Retrieves the index of the `ObjectObject` with the given id.
   fn data_index (&self, id: usize) -> (usize, bool) {
     for i in 0..(self.data_set.len()) {
       if self.data_set[i].id == id { return (i, false); }
