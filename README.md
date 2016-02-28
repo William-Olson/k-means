@@ -1,25 +1,31 @@
 ## k-means
 
-This repo is for my 2nd homework for data mining class.
-The program reads in a data file, and sorts the data objects
-(lines in the data file) by clusters based on similarity between
-other data objects in the data set.
+My 2nd homework for data mining class. Implements a simple k-means algorithm.
+
+The language for implementation was left up to the student, 
+so I decided to write my program in Rust. Mainly becuase...
+  - Everybody else will probably use C/C++, Java or Python
+  - I wanted to learn some rust
+  - rust is awesome
+
+The program reads in a data file (see input.txt), and groups the data objects
+(lines in the data file) into clusters based on similarity between
+other data objects in the data set with respect to the k constraint (cluster count).
+
+The k-means algorithm uses the Euclidean distance approach 
+to calculate the similarity/dissimilarity between data objects/centroids.
 
 ## build/run instructions
 
-clone this repo:
+First make sure you have rust installed, & clone this repo.
 
-```
-git clone https://willko@bitbucket.org/willko/k-means.git
-```
-
-do a build (optional):
+Then do a build (optional):
 
 ```
 cargo build
 ```
 
-run the code:
+Finally, run the code:
 
 ```
 cargo run <filename> <clusters>
@@ -38,8 +44,7 @@ _clusters_:
 
 need to implement:
   - Worker
-    - calc_means
-    - run
+    - (k < rows) error check
   - Util
     - write_to_file
 
