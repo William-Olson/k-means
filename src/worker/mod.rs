@@ -30,8 +30,7 @@ use worker::data_object::*;
 /// if the k-means algorithm is done.
 pub struct Worker {
   clusters: Vec<Cluster>,
-  data_set: Vec<DataObject>,
-  convergence: bool
+  data_set: Vec<DataObject>
 }
 
 
@@ -42,8 +41,7 @@ impl Worker {
   pub fn new () -> Worker {
     let wkr = Worker {
       clusters: Vec::new(),
-      data_set: Vec::new(),
-      convergence: false
+      data_set: Vec::new()
     };
     wkr
   }
@@ -177,15 +175,75 @@ impl Worker {
     (0, true)
   }
 
-  /// Calculates new centroid values for all `clusters`.
+  /// Calculates new means (centroids) for all `clusters`.
+  #[allow(unused_assignments)]
   fn calc_means (&mut self) -> bool {
-    //TODO: implement this
-    true
+    // Note: the above allow(unused_assignments) declaration only applies to this fn
+    // this tells the compiler that it's okay if we don't read the count variable
+    // when it gets intermediate values (ex: 2.0 is not read when counting to 4.0)
+    let mut changed = false;
+    let mut avg: (f32, f32);
+    let mut count: f32 = 0.0;
+    for c in &mut self.clusters {
+      avg = (0.0, 0.0);
+      count = 0.0;
+      for d in &self.data_set {
+        if d.cluster == c.id {
+          avg.0 += d.data[0];
+          avg.1 += d.data[1];
+          count += 1.0;
+        }
+      }
+      avg = (avg.0 / count, avg.1 / count);
+      if c.mean.x != avg.0 || c.mean.y != avg.1 {
+        changed = true;
+        c.mean.x = avg.0;
+        c.mean.y = avg.1;
+      }
+    }
+    changed
+  }
+
+  /// Calculates and sets the cluster id for a 
+  /// `DataObject` with the given id.
+  fn assign_cluster<'s_lifetime>(&'s_lifetime mut self, data_id: usize) -> bool {
+    let mut min_dist: (usize, f32) = (0, INFINITY);
+    let (index, err) = self.data_index(data_id);
+    if err { return false; }
+
+    //find most similar cluster centroid
+    for c in &self.clusters {
+      let dist: f32 = (self.data_set[index]).dist(&(c.mean));
+      if min_dist.1 > dist {
+        min_dist = (c.id, dist);
+      }
+    }
+    //set new cluster id if needed and return update status
+    if self.data_set[index].cluster != min_dist.0 && min_dist.0 > 0 {
+      self.data_set[index].cluster = min_dist.0;
+      return true;
+    }
+    false
   }
 
   /// Runs the k-means algorithm on `data_set`.
   pub fn run (&mut self) {
-    //TODO: implement this
+    loop {
+      let mut changed = false;
+
+      // assign data_objects to clusters
+      for i in 0..(self.data_set.len()) {
+        let id = self.data_set[i].id;
+        if self.assign_cluster(id) { changed = true; }
+      }
+
+      // update cluster means
+      if self.calc_means() { changed = true; }
+
+      // stop only if no changes have occurred
+      if !changed { return; }
+    }
+
   }
 
   /// Creates and returns a String containing the
