@@ -8,16 +8,18 @@ so I decided to write my program in Rust. Mainly becuase...
   - I wanted to learn some rust
   - rust is awesome
 
-The program reads in a data file (see input.txt), and groups the data objects
+## Description
+
+The program reads in a data file (see input/input1.txt), and groups the data objects
 (lines in the data file) into clusters based on similarity between
-other data objects in the data set with respect to the k constraint (cluster count).
+other data objects in the data set with respect to the k constraint (desired number of clusters).
 
 The k-means algorithm uses the Euclidean distance approach 
 to calculate the similarity/dissimilarity between data objects/centroids.
 
 ## build/run instructions
 
-First make sure you have rust installed, & clone this repo.
+First make sure you have [rust][rustsite] installed, & clone this repo.
 
 Then do a build (optional):
 
@@ -31,6 +33,11 @@ Finally, run the code:
 cargo run <filename> <clusters>
 ```
 
+As an example, you can use the provided input files:
+
+```
+cargo run input/input1.txt 3
+```
 
 #### required params
 
@@ -40,12 +47,6 @@ _filename_:
 _clusters_:
  - the desired number of clusters to establish.
 
-###### TODO:
 
-need to implement:
-  - Worker
-    - (k < rows) error check
 
-should also:
-  - add param & return rustdoc comment sections
-  - do some unit tests?
+[rustsite]: https://www.rust-lang.org/

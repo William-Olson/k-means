@@ -25,6 +25,14 @@ pub fn output (msg: &str) {
 }
 
 /// Handles file input and argument parsing.
+/// 
+/// # Panics
+///
+/// If reading the file produces any errors
+/// a panic will be called from the `read_file()`
+/// function which will terminate the thread. Also
+/// if the k parameter can not be parsed into a usize
+/// variable then a panic will automatically be called.
 pub fn parse_args () -> (String, usize, bool) {
   let mut args = Vec::new();
   let mut tmp_str = String::new();

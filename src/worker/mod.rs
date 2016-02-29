@@ -116,8 +116,21 @@ impl Worker {
 
   /// Creates a vector of `Cluster`s and assigns
   /// it to the `Worker`s `clusters` property.
+  ///
+  /// # Panics
+  ///
+  /// If k is greater than the total number of
+  /// `DataObject`s in `data_set` then a panic!
+  /// will be called terminating the thread.
   pub fn set_clusters (&mut self, k: usize) {
     self.clusters = Vec::new();
+
+    if k > self.data_set.len() {
+      println!("Error: Your k parameter is too large!");
+      panic!("k ({}) can NOT be greater than the total rows ({}) in the data set!",
+              k, self.data_set.len() );
+    }
+
     for i in 0..k {
       let tmp_clst = Cluster::new(i+1);
       self.clusters.push(tmp_clst);
