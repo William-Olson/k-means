@@ -31,7 +31,9 @@ fn main() {
     w.run(); // run k-means algorithm
 
     // output results
-    output(&(w.results_to_string()));
+    let results = w.results_to_string();
+    results_to_file(&results);
+    output(&results);
 }
 
 /// Prints the user input to the console.

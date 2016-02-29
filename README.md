@@ -45,8 +45,6 @@ _clusters_:
 need to implement:
   - Worker
     - (k < rows) error check
-  - Util
-    - write_to_file
 
 should also:
   - add param & return rustdoc comment sections

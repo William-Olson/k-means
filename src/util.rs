@@ -83,3 +83,64 @@ fn read_file(filename: &String) -> File {
   };
   file
 }
+
+/// Creates a file in the output folder & writes
+/// the given String `res` to it. Clobbers if exists.
+///
+/// # Panics
+///
+/// If errors occur trying to make the file with the path
+/// from `build_filename()`, a panic! will be called from
+/// the `mk_file()` function. Also if errors occur trying
+/// to write the res string to the file, a panic! will be
+/// called from the `wr_str_to_file()` function.
+pub fn results_to_file (res: &String) {
+  let output_name = build_filename();
+  let path = Path::new(&output_name);
+  let mut file = mk_file(&path);
+
+  wr_str_to_file(&mut file, res);
+}
+
+/// Creates a filename String based on the input filename.
+fn build_filename () -> String {
+  let mut fname = String::from("output/results_");
+  for a in env::args() {
+    if a.contains(".txt") {
+      let parts : Vec<String> =
+          a.split("/").map(|p| p.to_string()).collect();
+      fname.push_str(&((parts[parts.len() - 1]).to_string()));
+    }
+  }
+  fname
+}
+
+/// Creates a file for writing to with the given path.
+///
+/// # Panics
+///
+/// If errors occur trying to create the file with the given
+/// path, a panic! will be called, terminating the thread.
+fn mk_file(p: &Path) -> File {
+  let dsp = p.display();
+  let file = match File::create(&p) {
+      Err(er) => panic!("Error creating {}: {}", dsp, Error::description(&er)),
+      Ok(file) => file,
+  };
+  file
+}
+
+/// Writes the given String `instr` to the given File `f`.
+///
+/// # Panics
+///
+/// If errors occur trying to write the given String to the
+/// specified File, a panic! will be called and the thread
+/// will terminate with an error message.
+fn wr_str_to_file(f: &mut File, instr: &String) {
+  match f.write(instr.as_bytes()) {
+    Err(reason) => panic!("Error writing to file: {}", Error::description(&reason)),
+    Ok(_)       => { /* write successful */ },
+  }
+}
+
