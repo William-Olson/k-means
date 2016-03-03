@@ -6,7 +6,11 @@
 //!
 //! # Description
 //!
-//!
+//! Provides the Worker struct and methods
+//! for interacting with a Worker. The Worker
+//! keeps track of a data set and clusters
+//! associated with it.  It also handles running 
+//! algorithms on the data and clusters.
 
 
 
@@ -25,9 +29,7 @@ use worker::cluster::*;
 use worker::data_object::*;
 
 
-/// Holds cluster & data `Vec`s, and
-/// a convergence boolean for determining
-/// if the k-means algorithm is done.
+/// Holds cluster & data `Vec`s
 pub struct Worker {
   clusters: Vec<Cluster>,
   data_set: Vec<DataObject>

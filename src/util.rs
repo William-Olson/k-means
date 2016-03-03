@@ -6,7 +6,10 @@
 //!
 //! # Description
 //!
-//!
+//! Provides methods for parsing the 
+//! console arguments (including reading
+//! file content) and writing results to
+//! a file.
 
 
 //std libs
@@ -67,6 +70,8 @@ pub fn parse_args () -> (String, usize, bool) {
 
   // return errors if needed
   if k == 0 || tmp_str.is_empty() {
+    println!("Error: Parsing arguments Failed.");
+    println!("Please ensure k > 0, & the file is not empty.");
     return (tmp_str, k, true);
   }
 
@@ -112,14 +117,16 @@ pub fn results_to_file (res: &String) {
 
 /// Creates a filename String based on the input filename.
 fn build_filename () -> String {
-  let mut fname = String::from("output/results_");
+  let mut fname = String::from("output/results");
   for a in env::args() {
     if a.contains(".txt") {
       let parts : Vec<String> =
           a.split("/").map(|p| p.to_string()).collect();
+      fname.push('_');
       fname.push_str(&((parts[parts.len() - 1]).to_string()));
     }
   }
+  if fname.len() == 14 { fname.push_str(&".txt") }
   fname
 }
 

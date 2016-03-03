@@ -6,7 +6,9 @@
 //!
 //! # Description
 //!
-//!
+//! Provides the Cluster struct and
+//! methods for creation, printing, and
+//! setting the mean of the Cluster.
 
 
 pub struct Mean { pub x: f32, pub y: f32}

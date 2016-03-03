@@ -6,7 +6,9 @@
 //!
 //! # Description
 //!
-//!
+//! Provides the DataObject struct and
+//! methods for creating, printing and
+//! comparing DataObjects.
 
 
 use worker::cluster::Mean;
