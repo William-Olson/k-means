@@ -6,7 +6,7 @@
 //!
 //! # Description
 //!
-//! Provides methods for parsing the 
+//! Provides methods for parsing the
 //! console arguments (including reading
 //! file content) and writing results to
 //! a file.
@@ -28,7 +28,7 @@ pub fn output (msg: &str) {
 }
 
 /// Handles file input and argument parsing.
-/// 
+///
 /// # Panics
 ///
 /// If reading the file produces any errors
@@ -80,7 +80,7 @@ pub fn parse_args () -> (String, usize, bool) {
 
 /// Opens a file at the given path `filename`
 /// and returns the `File` object.
-/// 
+///
 /// # Panics
 ///
 /// If the _open file_ operation ecounters

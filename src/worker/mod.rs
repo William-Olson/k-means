@@ -9,7 +9,7 @@
 //! Provides the Worker struct and methods
 //! for interacting with a Worker. The Worker
 //! keeps track of a data set and clusters
-//! associated with it.  It also handles running 
+//! associated with it.  It also handles running
 //! algorithms on the data and clusters.
 
 
@@ -48,7 +48,7 @@ impl Worker {
     wkr
   }
 
-  /// Parses the given `blob` into a `DataObject`s 
+  /// Parses the given `blob` into a `DataObject`s
   /// and adds them to the `Worker`s `data_set`.
   pub fn set_data (&mut self, blob: &String) {
     let ref_data: Vec<&str> = blob.split("\n").collect(); //split by line
@@ -66,7 +66,7 @@ impl Worker {
     }
   }
 
-  /// Prints the distances from the `DataObject` with the 
+  /// Prints the distances from the `DataObject` with the
   /// given id against all other `DataObjects` in `data_set`.
   pub fn print_data_dists(&self, id: usize) {
     let mut res: Vec<(usize, f32)> = Vec::new();
@@ -219,7 +219,7 @@ impl Worker {
     changed
   }
 
-  /// Calculates and sets the cluster id for a 
+  /// Calculates and sets the cluster id for a
   /// `DataObject` with the given id.
   fn assign_cluster<'s_lifetime>(&'s_lifetime mut self, data_id: usize) -> bool {
     let mut min_dist: (usize, f32) = (0, INFINITY);
