@@ -14,7 +14,7 @@
 use worker::cluster::Mean;
 
 
-/// holds data values, data id, & cluster id
+/// Holds data values, data id, & cluster id.
 pub struct DataObject {
   pub id: usize,
   pub cluster: usize,
@@ -24,7 +24,7 @@ pub struct DataObject {
 
 impl DataObject {
 
-  /// creates a new `DataObject` struct
+  /// Creates a new `DataObject` struct.
   pub fn new(uid: usize, d: &Vec<f32>) -> DataObject {
       let data_obj = DataObject {
         id: uid,
@@ -34,12 +34,12 @@ impl DataObject {
       data_obj
   }
 
-  /// displays the current `DataObject` to the console
+  /// Displays the current `DataObject` to the console.
   pub fn print(&self) {
     println!("{} \t {:?} \t {}", self.id, self.data, self.cluster);
   }
 
-  /// calculates dissimilarity against the given operand
+  /// Calculates dissimilarity against the given operand.
   pub fn dist<T: DistOperand>(&self, operand: &T) -> f32 {
     operand.dist_cmp(&self)
   }
@@ -47,14 +47,14 @@ impl DataObject {
 }
 
 
-/// allows comparing 2 `DataObject`s or
-/// a `DataObject` with a `Mean` struct
+/// Allows comparing 2 `DataObject`s or
+/// a `DataObject` with a `Mean` struct.
 trait DistOperand {
   fn dist_cmp(&self, d: &DataObject) -> f32;
 }
 
-/// calculates dissimilarity between
-/// a `Mean` struct and a `DataObject`
+/// Calculates dissimilarity between
+/// a `Mean` struct and a `DataObject`.
 impl DistOperand for Mean {
   fn dist_cmp(&self, d: &DataObject) -> f32 {
      let diff1: f32 = d.data[0] - self.x;
@@ -64,8 +64,8 @@ impl DistOperand for Mean {
   }
 }
 
-/// calculates dissimilarity between
-/// two `DataObject`s
+/// Calculates dissimilarity between
+/// two `DataObject`s.
 impl DistOperand for DataObject {
   fn dist_cmp(&self, d: &DataObject) -> f32 {
     let mut ds: f32 = 0.0;
