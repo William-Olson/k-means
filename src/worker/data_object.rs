@@ -49,7 +49,7 @@ impl DataObject {
 
 /// Allows comparing 2 `DataObject`s or
 /// a `DataObject` with a `Mean` struct.
-trait DistOperand {
+pub trait DistOperand {
   fn dist_cmp(&self, d: &DataObject) -> f32;
 }
 
@@ -76,4 +76,3 @@ impl DistOperand for DataObject {
     ds
   }
 }
-
