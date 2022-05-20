@@ -1,7 +1,8 @@
 ## k-means
 
-Data Mining Homework 2
+[![CircleCI](https://circleci.com/gh/William-Olson/k-means/tree/master.svg?style=shield)](https://circleci.com/gh/William-Olson/k-means/tree/master)
 
+Data Mining Homework 2
 
 
 Reads in a data file (see [input/input1.txt][inputlink]), and groups
