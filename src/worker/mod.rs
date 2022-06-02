@@ -34,17 +34,19 @@ pub struct Worker {
 // methods for Worker
 impl Worker {
     /// Creates a new `Worker` struct.
-    pub fn new() -> Worker {
-        let wkr = Worker {
+    pub fn new(blob: String, k: usize) -> Worker {
+        let mut wkr = Worker {
             clusters: Vec::new(),
             data_set: Vec::new(),
         };
+        wkr.set_data(blob);
+        wkr.set_clusters(k);
         wkr
     }
 
     /// Parses the given `blob` into a `DataObject`s
     /// and adds them to the `Worker`s `data_set`.
-    pub fn set_data(&mut self, blob: &String) {
+    fn set_data(&mut self, blob: String) {
         let ref_data: Vec<&str> = blob.split("\n").collect(); //split by line
         let mut id = 1;
         for line in &ref_data {
@@ -129,7 +131,7 @@ impl Worker {
     /// If k is greater than the total number of
     /// `DataObject`s in `data_set` then a panic!
     /// will be called terminating the thread.
-    pub fn set_clusters(&mut self, k: usize) {
+    fn set_clusters(&mut self, k: usize) {
         self.clusters = Vec::new();
 
         if k > self.data_set.len() {

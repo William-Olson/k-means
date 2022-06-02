@@ -26,9 +26,7 @@ fn main() {
     }
 
     // create worker from input
-    let mut w = Worker::new();
-    w.set_data(&data_blob);
-    w.set_clusters(k);
+    let mut w = Worker::new(data_blob, k);
 
     w.run(); // run k-means algorithm
 
