@@ -11,20 +11,18 @@
 //! file content) and writing results to
 //! a file.
 
-
 //std libs
+use std::env;
 use std::error::Error;
 use std::fs::File;
-use std::path::Path;
 use std::io::prelude::*;
-use std::env;
+use std::path::Path;
 
-
-const PROGRAM: &'static str  = "k-means";
+const PROGRAM: &'static str = "k-means";
 
 /// Outputs `msg` to the console.
-pub fn output (msg: &str) {
-  println!("{}", msg);
+pub fn output(msg: &str) {
+    println!("{}", msg);
 }
 
 /// Handles file input and argument parsing.
@@ -36,46 +34,49 @@ pub fn output (msg: &str) {
 /// function which will terminate the thread. Also
 /// if the k parameter can not be parsed into a usize
 /// variable then a panic will automatically be called.
-pub fn parse_args () -> (String, usize, bool) {
-  let mut args = Vec::new();
-  let mut tmp_str = String::new();
+pub fn parse_args() -> (String, usize, bool) {
+    let mut args = Vec::new();
+    let mut tmp_str = String::new();
 
-  // arg length check
-  if env::args().len() <= 2 {
-    println!("\nError: Not enough arguments!");
-    println!("Cargo Usage: \n\n\tcargo run <file> <k>\n");
-    println!("Binary Usage: \n\n\t./k-means <file> <k>\n");
-    return (tmp_str, 0, true);
-  }
-
-  // get args
-  for a in env::args() {
-    if a.contains(PROGRAM) == false {
-      args.push(a);
+    // arg length check
+    if env::args().len() <= 2 {
+        println!("\nError: Not enough arguments!");
+        println!("Cargo Usage: \n\n\tcargo run <file> <k>\n");
+        println!("Binary Usage: \n\n\t./k-means <file> <k>\n");
+        return (tmp_str, 0, true);
     }
-  }
 
-  // parse k arg
-  let k: usize = match args[1].parse::<usize>() {
-      Err(e) => { println!("\nError parsing k argument: {}", Error::description(&e)); 0 },
-      Ok(result) => result,
-  };
+    // get args
+    for a in env::args() {
+        if a.contains(PROGRAM) == false {
+            args.push(a);
+        }
+    }
 
-  // read file data
-  let mut file = read_file(&args[0]);
-  match file.read_to_string(&mut tmp_str) {
-      Err(er) => println!("\nError reading file: {}", Error::description(&er)),
-      Ok(_)   => { /* data read successfully */ },
-  }
+    // parse k arg
+    let k: usize = match args[1].parse::<usize>() {
+        Err(e) => {
+            println!("\nError parsing k argument: {}", Error::description(&e));
+            0
+        }
+        Ok(result) => result,
+    };
 
-  // return errors if needed
-  if k == 0 || tmp_str.is_empty() {
-    println!("Error: Parsing arguments Failed.");
-    println!("Please ensure k > 0, & the file is not empty.");
-    return (tmp_str, k, true);
-  }
+    // read file data
+    let mut file = read_file(&args[0]);
+    match file.read_to_string(&mut tmp_str) {
+        Err(er) => println!("\nError reading file: {}", Error::description(&er)),
+        Ok(_) => { /* data read successfully */ }
+    }
 
-  (tmp_str, k, false)
+    // return errors if needed
+    if k == 0 || tmp_str.is_empty() {
+        println!("Error: Parsing arguments Failed.");
+        println!("Please ensure k > 0, & the file is not empty.");
+        return (tmp_str, k, true);
+    }
+
+    (tmp_str, k, false)
 }
 
 /// Opens a file at the given path `filename`
@@ -87,14 +88,14 @@ pub fn parse_args () -> (String, usize, bool) {
 /// any errors, a panic will be called, which
 /// terminates the thread & displays errors.
 fn read_file(filename: &String) -> File {
-  let path = Path::new(filename);
-  let dsp = path.display();
-  // open file (in read-only mode) & read contents
-  let file: File = match File::open(&path) {
-      Err(er) => panic!("Error: couldn't open {}: {}", dsp, Error::description(&er)),
-      Ok(file) => file,
-  };
-  file
+    let path = Path::new(filename);
+    let dsp = path.display();
+    // open file (in read-only mode) & read contents
+    let file: File = match File::open(&path) {
+        Err(er) => panic!("Error: couldn't open {}: {}", dsp, Error::description(&er)),
+        Ok(file) => file,
+    };
+    file
 }
 
 /// Creates a file in the output folder & writes
@@ -107,27 +108,28 @@ fn read_file(filename: &String) -> File {
 /// the `mk_file()` function. Also if errors occur trying
 /// to write the res string to the file, a panic! will be
 /// called from the `wr_str_to_file()` function.
-pub fn results_to_file (res: &String) {
-  let output_name = build_filename();
-  let path = Path::new(&output_name);
-  let mut file = mk_file(&path);
+pub fn results_to_file(res: &String) {
+    let output_name = build_filename();
+    let path = Path::new(&output_name);
+    let mut file = mk_file(&path);
 
-  wr_str_to_file(&mut file, res);
+    wr_str_to_file(&mut file, res);
 }
 
 /// Creates a filename String based on the input filename.
-fn build_filename () -> String {
-  let mut fname = String::from("output/results");
-  for a in env::args() {
-    if a.contains(".txt") {
-      let parts : Vec<String> =
-          a.split("/").map(|p| p.to_string()).collect();
-      fname.push('_');
-      fname.push_str(&((parts[parts.len() - 1]).to_string()));
+fn build_filename() -> String {
+    let mut fname = String::from("output/results");
+    for a in env::args() {
+        if a.contains(".txt") {
+            let parts: Vec<String> = a.split("/").map(|p| p.to_string()).collect();
+            fname.push('_');
+            fname.push_str(&((parts[parts.len() - 1]).to_string()));
+        }
     }
-  }
-  if fname.len() == 14 { fname.push_str(&".txt") }
-  fname
+    if fname.len() == 14 {
+        fname.push_str(&".txt")
+    }
+    fname
 }
 
 /// Creates a file for writing to with the given path.
@@ -137,12 +139,12 @@ fn build_filename () -> String {
 /// If errors occur trying to create the file with the given
 /// path, a panic! will be called, terminating the thread.
 fn mk_file(p: &Path) -> File {
-  let dsp = p.display();
-  let file = match File::create(&p) {
-      Err(er) => panic!("Error creating {}: {}", dsp, Error::description(&er)),
-      Ok(file) => file,
-  };
-  file
+    let dsp = p.display();
+    let file = match File::create(&p) {
+        Err(er) => panic!("Error creating {}: {}", dsp, Error::description(&er)),
+        Ok(file) => file,
+    };
+    file
 }
 
 /// Writes the given String `instr` to the given File `f`.
@@ -153,9 +155,8 @@ fn mk_file(p: &Path) -> File {
 /// specified File, a panic! will be called and the thread
 /// will terminate with an error message.
 fn wr_str_to_file(f: &mut File, instr: &String) {
-  match f.write(instr.as_bytes()) {
-    Err(reason) => panic!("Error writing to file: {}", Error::description(&reason)),
-    Ok(_)       => { /* write successful */ },
-  }
+    match f.write(instr.as_bytes()) {
+        Err(reason) => panic!("Error writing to file: {}", Error::description(&reason)),
+        Ok(_) => { /* write successful */ }
+    }
 }
-

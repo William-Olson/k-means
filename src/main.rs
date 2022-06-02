@@ -21,7 +21,9 @@ fn main() {
 
     // parse arguments
     let (data_blob, k, err) = parse_args();
-    if err { return; }
+    if err {
+        return;
+    }
 
     // create worker from input
     let mut w = Worker::new();
@@ -37,6 +39,6 @@ fn main() {
 }
 
 /// Prints the user input to the console.
-fn show_input (ds: &String, k: usize) {
+fn show_input(ds: &String, k: usize) {
     println!("k: {} \ndata: \n{}", k, ds);
 }
