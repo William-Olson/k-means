@@ -54,7 +54,7 @@ impl DistOperand for Mean {
         let diff1: f32 = d.data[0] - self.x;
         let diff2: f32 = d.data[1] - self.y;
 
-        (diff1.powi(2).sqrt() + diff2.powi(2).sqrt())
+        diff1.powi(2).sqrt() + diff2.powi(2).sqrt()
     }
 }
 

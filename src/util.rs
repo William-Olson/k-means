@@ -13,7 +13,6 @@
 
 //std libs
 use std::env;
-use std::error::Error;
 use std::fs::File;
 use std::io::prelude::*;
 use std::path::Path;
@@ -56,7 +55,7 @@ pub fn parse_args() -> (String, usize, bool) {
     // parse k arg
     let k: usize = match args[1].parse::<usize>() {
         Err(e) => {
-            println!("\nError parsing k argument: {}", Error::description(&e));
+            eprintln!("\nError parsing k argument: {}", e);
             0
         }
         Ok(result) => result,
@@ -65,13 +64,13 @@ pub fn parse_args() -> (String, usize, bool) {
     // read file data
     let mut file = read_file(&args[0]);
     match file.read_to_string(&mut tmp_str) {
-        Err(er) => println!("\nError reading file: {}", Error::description(&er)),
+        Err(er) => eprintln!("\nError reading file: {}", er),
         Ok(_) => { /* data read successfully */ }
     }
 
     // return errors if needed
     if k == 0 || tmp_str.is_empty() {
-        println!("Error: Parsing arguments Failed.");
+        eprintln!("Error: Parsing arguments Failed.");
         println!("Please ensure k > 0, & the file is not empty.");
         return (tmp_str, k, true);
     }
@@ -92,7 +91,7 @@ fn read_file(filename: &String) -> File {
     let dsp = path.display();
     // open file (in read-only mode) & read contents
     let file: File = match File::open(&path) {
-        Err(er) => panic!("Error: couldn't open {}: {}", dsp, Error::description(&er)),
+        Err(er) => panic!("Error: couldn't open {}: {}", dsp, er),
         Ok(file) => file,
     };
     file
@@ -141,7 +140,7 @@ fn build_filename() -> String {
 fn mk_file(p: &Path) -> File {
     let dsp = p.display();
     let file = match File::create(&p) {
-        Err(er) => panic!("Error creating {}: {}", dsp, Error::description(&er)),
+        Err(er) => panic!("Error creating {}: {}", dsp, er),
         Ok(file) => file,
     };
     file
@@ -156,7 +155,7 @@ fn mk_file(p: &Path) -> File {
 /// will terminate with an error message.
 fn wr_str_to_file(f: &mut File, instr: &String) {
     match f.write(instr.as_bytes()) {
-        Err(reason) => panic!("Error writing to file: {}", Error::description(&reason)),
+        Err(reason) => panic!("Error writing to file: {}", reason),
         Ok(_) => { /* write successful */ }
     }
 }

@@ -1,6 +1,6 @@
 [package]
 name = "k-means"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["William Olson <willko747@gmail.com>"]
 
 [dependencies]
